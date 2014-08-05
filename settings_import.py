@@ -3,8 +3,16 @@ from os import getenv
 import locale
 
 # Read list of admins from $DOCKER_CRYPT_ADMINS env var
+admin_list = []
 if getenv('DOCKER_CRYPT_ADMINS'):
-    ADMINS = getenv('DOCKER_CRYPT_ADMINS').split(',')
+    admins_var = getenv('DOCKER_CRYPT_ADMINS')
+    if ',' in admins_var and ':' in admins_var:
+        for admin in admins_var.split(':'):
+            admin_list.append(tuple(admin.split(',')))
+        ADMINS = tuple(admin_list)
+    elif ',' in admins_var:
+        admin_list.append(tuple(admins_var.split(',')))
+        ADMINS = tuple(admin_list)
 else:
     ADMINS = (
                 ('Admin User', 'admin@test.com')

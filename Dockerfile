@@ -2,17 +2,27 @@
 FROM phusion/passenger-customizable:0.9.11
 MAINTAINER Pepijn Bruienne bruienne@umich.edu
 
+# Basic env vars for apt and Passenger
 ENV HOME /root
 ENV DEBIAN_FRONTEND noninteractive
+ENV TZ America/New_York
+
+# DOCKER_CRYPT_* env vars configure the following possible settings in Crypt's
+# settings.py:
+# DOCKER_CRYPT_ADMINS = A list of lists (tuples) of names and email addresses of authorized admins
+# DOCKER_CRYPT_ALLOWED = A list of allowed hosts or IP addresses, defaults to *
+# DOCKER_CRYPT_LANG = Preferred language
+# DOCKER_CRYPT_TZ = Time zone to use for GUI and logging
+
+# To define multiple admins: Some Name,some@where.com:Another One,another@host.net
 ENV DOCKER_CRYPT_ADMINS Admin User,admin@test.com
-# ENV DOCKER_CRYPT_ALLOWED
-ENV DOCKER_CRYPT_TZ America/Detroit
+# ENV DOCKER_CRYPT_ALLOWED myhost,1.2.3.4,anotherhost.fqdn.com
 ENV DOCKER_CRYPT_LANG en_US
+ENV DOCKER_CRYPT_TZ America/New_York
 
 CMD ["/sbin/my_init"]
 RUN apt-get -y update
 RUN /build/utilities.sh
-# RUN /build/devheaders.sh
 RUN /build/python.sh
 
 RUN apt-get -y install python-setuptools libapache2-mod-wsgi && easy_install pip && \
@@ -31,7 +41,6 @@ ADD settings_import.py /home/app/crypt/fvserver/
 ADD crypt.conf /etc/nginx/sites-enabled/
 ADD crypt-env.conf /etc/nginx/main.d/crypt-env.conf
 ADD passenger_wsgi.py /home/app/crypt/
-# ADD https://raw.githubusercontent.com/nginx/nginx/master/conf/uwsgi_params /home/app/crypt/
 
 RUN cd /home/app/crypt/ && \
     python manage.py syncdb --noinput && \
