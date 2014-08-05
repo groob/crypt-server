@@ -34,9 +34,11 @@ RUN apt-get -y install python-setuptools libapache2-mod-wsgi && easy_install pip
 # python manage.py syncdb (manually enter sample admin user)
 # python manage.py dumpdata --indent=2 auth > initial_data.json
 ADD initial_data.json /home/app/crypt/
+
 # Add a modified settings.py that imports setting_import which in turn grabs
 # Docker env vars, this way we separate out the main settings and Docker vars
 ADD settings.py /home/app/crypt/fvserver/
+
 ADD settings_import.py /home/app/crypt/fvserver/
 ADD crypt.conf /etc/nginx/sites-enabled/
 ADD crypt-env.conf /etc/nginx/main.d/crypt-env.conf
