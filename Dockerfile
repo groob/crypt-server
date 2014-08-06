@@ -49,6 +49,9 @@ RUN cd /home/app/crypt/ && \
     python manage.py migrate && \
     python manage.py collectstatic --noinput && \
     chown -R app:app /home/app/crypt && \
+    chmod go+x /home/app/crypt && \
+    chmod go+x /home/app && \
+    chmod go+x /home && \
     mkdir /home/app/crypt/tmp && \
     chmod go+w /home/app/crypt/crypt.db
 
