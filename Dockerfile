@@ -51,3 +51,8 @@ RUN cd /home/app/crypt/ && \
     chown -R app:app /home/app/crypt && \
     mkdir /home/app/crypt/tmp && \
     chmod go+w /home/app/crypt/crypt.db
+
+EXPOSE 8000
+
+# Clean up APT when done.
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
