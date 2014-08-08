@@ -25,15 +25,13 @@ RUN apt-get -y update
 RUN /build/utilities.sh
 RUN /build/python.sh
 
-RUN apt-get -y install python-setuptools libapache2-mod-wsgi && easy_install pip && \
+RUN apt-get -y install python-setuptools libapache2-mod-wsgi python-dev libpq-dev && easy_install pip && \
     git clone https://github.com/grahamgilbert/Crypt-Server.git /home/app/crypt && \
     pip install -r /home/app/crypt/setup/requirements.txt && \
     rm -f /etc/service/nginx/down
 
-# Generate initial_data.json with:
-# python manage.py syncdb (manually enter sample admin user)
-# python manage.py dumpdata --indent=2 auth > initial_data.json
-ADD initial_data.json /home/app/crypt/
+RUN pip install psycopg2==2.5.3
+RUN mkdir -p /etc/my_init.d
 
 # Add a modified settings.py that imports setting_import which in turn grabs
 # Docker env vars, this way we separate out the main settings and Docker vars
@@ -42,18 +40,22 @@ ADD settings.py /home/app/crypt/fvserver/
 ADD settings_import.py /home/app/crypt/fvserver/
 ADD crypt.conf /etc/nginx/sites-enabled/
 ADD crypt-env.conf /etc/nginx/main.d/crypt-env.conf
+ADD django/ /home/app/crypt
 ADD passenger_wsgi.py /home/app/crypt/
+ADD run.sh /etc/my_init.d/run.sh
 
 RUN cd /home/app/crypt/ && \
     python manage.py syncdb --noinput && \
     python manage.py migrate && \
     python manage.py collectstatic --noinput && \
+    python manage.py update_admin_user --username=admin --password=admin && \
     chown -R app:app /home/app/crypt && \
     chmod go+x /home/app/crypt && \
     chmod go+x /home/app && \
     chmod go+x /home && \
     mkdir /home/app/crypt/tmp && \
     chmod go+w /home/app/crypt/crypt.db
+
 
 EXPOSE 8000
 
