@@ -19,7 +19,18 @@ DATABASES = {
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
 }
-
+# PG Database
+if os.environ.has_key('DB_PORT_5432_TCP_ADDR'):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': os.environ['DB_NAME'],
+            'USER': os.environ['DB_USER'],
+            'PASSWORD': os.environ['DB_PASS'],
+            'HOST': os.environ['DB_PORT_5432_TCP_ADDR'],
+            'PORT': os.environ['DB_PORT_5432_TCP_PORT'],
+        }
+    }
 SITE_ID = 1
 
 # If you set this to False, Django will make some optimizations so as not
@@ -126,6 +137,7 @@ INSTALLED_APPS = (
     'server',
     'south',
     'bootstrap_toolkit',
+    'admin_tools',
 )
 
 # A sample logging configuration. The only tangible logging
