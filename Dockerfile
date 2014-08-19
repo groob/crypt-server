@@ -44,18 +44,7 @@ ADD django/ /home/app/crypt
 ADD passenger_wsgi.py /home/app/crypt/
 ADD run.sh /etc/my_init.d/run.sh
 
-RUN cd /home/app/crypt/ && \
-    python manage.py syncdb --noinput && \
-    python manage.py migrate && \
-    python manage.py collectstatic --noinput && \
-    python manage.py update_admin_user --username=admin --password=admin && \
-    chown -R app:app /home/app/crypt && \
-    chmod go+x /home/app/crypt && \
-    chmod go+x /home/app && \
-    chmod go+x /home && \
-    mkdir /home/app/crypt/tmp && \
-    chmod go+w /home/app/crypt/crypt.db
-
+VOLUME ["/home/app/crypt/crypt/settings.py", "/home/app/crypt/db"]
 
 EXPOSE 8000
 
