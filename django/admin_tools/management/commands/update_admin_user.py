@@ -1,6 +1,6 @@
-# Creates/Updates an admin user for the Django Auth module.
-# Taken from the Shipyard project.
-# https://github.com/shipyard/shipyard/blob/master/shipyard/management/commands/update_admin_user.py
+'''
+Creates an admin user if there aren't any existing superusers
+'''
 
 from django.core.management.base import BaseCommand, CommandError
 from django.contrib.auth.models import User
@@ -27,9 +27,15 @@ class Command(BaseCommand):
         password = options.get('password')
         if not username or not password:
             raise StandardError('You must specify a username and password')
-        user, created = User.objects.get_or_create(username=username)
-        user.set_password(password)
-        user.is_staff = True
-        user.is_superuser = True
-        user.save()
-        print('{0} updated'.format(username))
+        # Get the current superusers
+        su_count = User.objects.filter(is_superuser=True).count()
+        if su_count == 0:
+            # there aren't any superusers, create one
+            user, created = User.objects.get_or_create(username=username)
+            user.set_password(password)
+            user.is_staff = True
+            user.is_superuser = True
+            user.save()
+            print('{0} updated'.format(username))
+        else:
+            print('There are already {0} superusers'.format(su_count))
