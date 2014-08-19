@@ -2,6 +2,7 @@
 
 ADMIN_PASS=${ADMIN_PASS:-}
 cd /home/app/crypt
+chown -R app:app /home/app/crypt
 mkdir -p db
 python manage.py syncdb --noinput
 python manage.py migrate --noinput
@@ -12,3 +13,4 @@ if [ ! -z "$ADMIN_PASS" ] ; then
 else
   python manage.py update_admin_user --username=admin --password=admin
 fi
+chown -R app:app /home/app/crypt
