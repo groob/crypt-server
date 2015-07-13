@@ -52,7 +52,7 @@ ADD settings.py $APP_DIR/fvserver/
 ADD settings_import.py $APP_DIR/fvserver/
 ADD wsgi.py $APP_DIR/
 ADD gunicorn_config.py $APP_DIR/
-ADD django/management/ $APP_DIR/fvserver/management/
+ADD django/management/ $APP_DIR/server/management/
 ADD run.sh /run.sh
 ADD supervisord.conf $APP_DIR/supervisord.conf
 
