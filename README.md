@@ -1,7 +1,13 @@
 __[Crypt][1]__ is a system for centrally storing FileVault 2 recovery keys. It is made up of a client app, and a Django web app for storing the keys.
 
-This Docker image contains the fully configured Crypt Django web app. A default admin user has been preconfigured, use admin/admin to login.
+This Docker image contains the fully configured Crypt Django web app. A default admin user has been preconfigured, use admin/password to login.
 If you intend on using the server for anything semi-serious it is a good idea to change the password or add a new admin user and delete the default one.
+
+The secrets are encrypted, with the encryption keys stored at ``/home/app/crypt/keyset``. You should mount this on your host to preserve the keys:
+
+```
+-v /somewhere/on/the/host:/home/app/crypt/keyset
+```
 
 __Changes in this version__
 =================

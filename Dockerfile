@@ -65,4 +65,6 @@ RUN update-rc.d -f postgresql remove && \
 
 EXPOSE 8000
 
+VOLUME $APP_DIR/keyset
+
 CMD ["/run.sh"]

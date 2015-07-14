@@ -115,7 +115,7 @@ ROOT_URLCONF = 'fvserver.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'fvserver.wsgi.application'
-
+ENCRYPTED_FIELD_KEYS_DIR = os.path.join(PROJECT_DIR, 'keyset')
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
@@ -135,7 +135,8 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
     'server',
-    'bootstrap3'
+    'bootstrap3',
+    'django_extensions',
 )
 
 # A sample logging configuration. The only tangible logging
