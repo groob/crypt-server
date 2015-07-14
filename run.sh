@@ -2,6 +2,7 @@
 
 cd $APP_DIR
 ADMIN_PASS=${ADMIN_PASS:-}
+python generate_keyczart.py
 python manage.py syncdb --noinput
 python manage.py migrate server
 python manage.py migrate --noinput
