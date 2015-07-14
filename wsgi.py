@@ -10,5 +10,5 @@ site.addsitedir(os.path.join(CRYPT_ENV_DIR, 'lib/python2.7/site-packages'))
 sys.path.append(CRYPT_ENV_DIR)
 sys.path.append(os.path.join(CRYPT_ENV_DIR, 'fvserver'))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "fvserver.settings")
-import django.core.handlers.wsgi
-application = django.core.handlers.wsgi.WSGIHandler()
+from django.core.wsgi import get_wsgi_application
+application = get_wsgi_application()
