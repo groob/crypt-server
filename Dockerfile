@@ -21,6 +21,7 @@ ENV DOCKER_CRYPT_LANG en_US
 ENV DOCKER_CRYPT_TZ America/New_York
 
 RUN apt-get update && \
+    apt-get install -y libc-bin && \
     apt-get install -y software-properties-common && \
     apt-get -y update && \
     add-apt-repository -y ppa:nginx/stable && \
