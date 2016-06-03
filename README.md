@@ -54,3 +54,28 @@ DB_PORT_5432_TCP_ADDR
 DB_PORT_5432_TCP_PORT
 ```
 
+Getting started:
+```
+# pull the containers
+docker pull macadmins/crypt-server
+docker pull postgres:9.5.3
+
+# set up postgres
+docker run --rm --name crypt-postgres \
+    -v /path/to/where/pg/data/should/be/saved/data:/var/lib/postgresql/data \
+    -e POSTGRES_PASSWORD=mysecretpassword \
+    -e POSTGRES_USER=cryptuser \
+    -e POSTGRES_DB=cryptdb \
+    -d postgres
+
+# match the postgres user, db name and password from above
+docker run -d --rm --name crypt --link crypt-postgres:db \
+    -v /somewhere/on/the/host:/home/docker/crypt/keyset \
+    -p 8000:8000 \
+    -e DB_NAME=cryptdb \
+    -e DB_USER=cryptuser \
+    -e DB_PASS=mysecretpassword \
+    -d macadmins/crypt-server
+
+```
+Once you start both containers, the crypt web application will be accessible at `http://docker_host_ip:8000`
