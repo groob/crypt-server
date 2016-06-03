@@ -28,3 +28,29 @@ __Features__
 
 
   [1]: https://github.com/grahamgilbert/Crypt
+
+# Docker Environment variables
+The `macadmins/crypt-server` container exposes several environment variables that you can configure at runtime.  
+If you're new to using docker, see the [official documentation](https://docs.docker.com/engine/reference/run/#env-environment-variables) for how to specify environment variables.
+
+Configurable parameters and defaults
+```
+TZ America/New_York
+# To define multiple admins: Some Name,some@where.com:Another One,another@host.net
+DOCKER_CRYPT_ADMINS Admin User,admin@test.com
+DOCKER_CRYPT_LANG en_US
+DOCKER_CRYPT_TZ America/New_York
+
+# django admin password. This setting is only used on first setup
+ADMIN_PASS
+
+# database configuration
+# these can be specified directly, or by linking a database container with --link some-postgres:db
+# :db becomes DB_ when the containers are linked
+DB_NAME
+DB_USER
+DB_PASS
+DB_PORT_5432_TCP_ADDR
+DB_PORT_5432_TCP_PORT
+```
+
